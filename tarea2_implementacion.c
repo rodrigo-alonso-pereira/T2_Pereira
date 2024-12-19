@@ -77,16 +77,18 @@ void imprime_cola(cola* c) {
 	if (es_cola_vacia(c) == 0) {
 		carga* ptr = c->frente;
 		while (ptr != NULL) {
-			printf("[c=%d_tc=%d-te=%d-tp=%d]\n", 
+            //[c=numero de carga_tc=tiempo de carga-te=tiempo de embarque-tp=tiempo de permanencia]
+			printf("[c=%d_tc=%d-te=%d-tp=%d-ta=%d]\n", 
                 ptr->num_carga, 
                 ptr->datos_carga->tiempo_carga, 
                 ptr->datos_carga->tiempo_embarque, 
-                ptr->datos_carga->tiempo_permanencia);
+                ptr->datos_carga->tiempo_permanencia,
+                ptr->datos_carga->tiempo_activacion);
 			ptr = ptr->siguiente;
 		}
 		printf("\n");
 	} else {
-		printf("Cola vacia\n");
+		printf("[]\n\n");
 	}
 }
 
@@ -103,21 +105,51 @@ int embarcar(float probabilidad) {
     };
 }
 
-void simular(cola* cola_embarque, cola* cola_espera ,int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque) {
+void simular(cola* cola_espera, cola* cola_embarque ,int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque) {
        //TODO: Implementar la simulación según las especificaciones del enunciado
        int count_tiempo = 0;
        int num_carga = 1;
+       int proceso_embarque = 0; //Proceso de embarque no activo por defecto
+       int tiempo_activacion = 0; //Tiempo en que se activa el embarque
        while (count_tiempo <= tiempo_simulacion) { //Mientras sea menor que el tiempo de simulacion
-            //printf("Tiempo: %d\n", count_tiempo);
+            printf("--------------------------------\n");
+            printf("*** Tiempo de simulacion: %d ***\n", count_tiempo);
+            printf("--------------------------------\n");
             if (count_tiempo % tiempo_intervalo == 0) { //Si el tiempo actual es multiplo del intervalo
                 datos* datos_carga = (datos*)malloc(sizeof(datos)); //Crear datos de carga
                 datos_carga->tiempo_carga = count_tiempo; //Asignar tiempo cuando entra a cola de espera 
                 datos_carga->tiempo_embarque = 0; 
                 datos_carga->tiempo_permanencia = 0;
-                encolar(cola_embarque, datos_carga, num_carga); //Encolar carga nueva
+                datos_carga->tiempo_activacion = 0;
+                encolar(cola_espera, datos_carga, num_carga); //Encolar carga nueva
                 num_carga++; //Aumentar numero de carga
             }
+            int embarque = embarcar(probabilidad_embarque); //Embarcar
+            if (embarque == 1 || proceso_embarque == 1) { //Si se puede embarcar o ya se esta embarcando
+                if (!es_cola_vacia(cola_espera)) { //Si la cola de espera no esta vacia
+                    printf("\n*Proceso de embarque activo ");
+                    if (!proceso_embarque)
+                        tiempo_activacion = count_tiempo; //Asignar tiempo de activacion de embarque
+                    printf("desde tiempo %d...\n\n", tiempo_activacion);
+                    proceso_embarque = 1; //Iniciar proceso de embarque
+                    carga* carga_actual = frente(cola_espera); //Obtener carga actual
+                    if (carga_actual->datos_carga->tiempo_carga < tiempo_activacion) { //Si el tiempo de la carga es menor al tiempo de inicio embarque
+                        carga_actual->datos_carga->tiempo_embarque = count_tiempo; //Asignar tiempo de embarque
+                        carga_actual->datos_carga->tiempo_permanencia = count_tiempo - carga_actual->datos_carga->tiempo_carga; //Asignar tiempo de permanencia
+                        carga_actual->datos_carga->tiempo_activacion = tiempo_activacion; //Asignar tiempo de activacion de embarque
+                        encolar(cola_embarque, carga_actual->datos_carga, carga_actual->num_carga); //Encolar carga en espera
+                        desencolar(cola_espera); //Desencolar carga actual
+                    } else { //Si n
+                        proceso_embarque = 0; //Terminar proceso de embarque
+                    }
+                } else {
+                    proceso_embarque = 0; //Terminar proceso de embarque
+                }
+            }
+            printf("Cola de espera\n");
+            imprime_cola(cola_espera);
+            printf("Cola de embarque\n");
+            imprime_cola(cola_embarque);
             count_tiempo++; //Aumentar tiempo en 1
        }
-       
 }

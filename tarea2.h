@@ -6,6 +6,7 @@ typedef struct{
     int tiempo_carga;
     int tiempo_embarque;
     int tiempo_permanencia;
+    int tiempo_activacion;
 } datos;
 
 typedef struct carga{
