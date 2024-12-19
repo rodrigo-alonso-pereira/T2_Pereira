@@ -92,11 +92,14 @@ void imprime_cola(cola* c) {
 // embarcar(probabilidad) simula el embarque de un pasajero
 // orden de complejidad: O(1)
 int embarcar(float probabilidad) {
-    if (1 * rand()/RAND_MAX >= probabilidad) {
+    float aleatorio = 1.0 * rand()/RAND_MAX;
+    if (aleatorio < probabilidad) {
         return 1;
     } else {
         return 0;
     };
 }
 
-//TODO: Revisar la implementación de la función embarcar, corroborar que sean realmente aleatorios
+void simular(int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque) {
+       //TODO: Implementar la simulación según las especificaciones del enunciado
+}

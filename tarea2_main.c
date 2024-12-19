@@ -19,11 +19,18 @@ int main(int argc, char *argv[])
     printf("Intervalo de llegada: %d\n", tiempo_intervalo);
     printf("Probabilidad de embarque: %.2f\n", probabilidad_embarque);
 
-    for (int i = 0; i < 10; i++) {
+    /*double count = 0.0;
+    for (int i = 0; i < 1000; i++) {
         int prob = embarcar(probabilidad_embarque);
-        (prob) ? printf("Embarque exitoso: %d\n", prob) : printf("Embarque fallido: %d\n", prob);
+        if (prob) {
+          printf("Embarque exitoso: %d\n", prob);
+          count++;  
+        } else {
+          printf("Embarque fallido: %d\n", prob);  
+        }
     }
-
+    printf("Embarques exitosos: %.2f\n", count/1000);
+    */
 
     return 0;
 }
