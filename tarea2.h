@@ -30,3 +30,5 @@ carga* final(cola* c);
 void imprime_cola(cola* c);
 
 /*------------- operaciones SIMULACION -------------*/
+
+int embarcar(float probabilidad);

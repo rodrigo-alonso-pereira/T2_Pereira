@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tarea2.h"
+#include <time.h>
+
 
 /*------------- operaciones COLA -------------*/
 
@@ -86,3 +88,15 @@ void imprime_cola(cola* c) {
 }
 
 /*------------- operaciones SIMULACION -------------*/
+
+// embarcar(probabilidad) simula el embarque de un pasajero
+// orden de complejidad: O(1)
+int embarcar(float probabilidad) {
+    if (1 * rand()/RAND_MAX >= probabilidad) {
+        return 1;
+    } else {
+        return 0;
+    };
+}
+
+//TODO: Revisar la implementación de la función embarcar, corroborar que sean realmente aleatorios
