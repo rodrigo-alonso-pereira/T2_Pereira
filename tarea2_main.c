@@ -19,6 +19,15 @@ int main(int argc, char *argv[])
     printf("Intervalo de llegada: %d\n", tiempo_intervalo);
     printf("Probabilidad de embarque: %.2f\n", probabilidad_embarque);
 
+    cola *cola_embarque = crea_cola(); // cola cuando las cargas son embarcadas
+    cola *cola_espera = crea_cola(); // cola cuando las cargas esperan ser embarcadas
+
+    simular(cola_embarque, cola_espera, tiempo_simulacion, tiempo_intervalo, probabilidad_embarque);
+    printf("Cola de embarque\n");
+    //printf("Frente: %d\n", frente(cola_embarque)->num_carga);
+    //printf("Final: %d\n", final(cola_embarque)->num_carga);
+    imprime_cola(cola_embarque);
+
     /*double count = 0.0;
     for (int i = 0; i < 1000; i++) {
         int prob = embarcar(probabilidad_embarque);

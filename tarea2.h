@@ -32,4 +32,4 @@ void imprime_cola(cola* c);
 /*------------- operaciones SIMULACION -------------*/
 
 int embarcar(float probabilidad);
-void simular(int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque);
+void simular(cola* embarque, cola* espera ,int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque);
