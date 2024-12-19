@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     cola *cola_embarque = crea_cola(); // cola cuando las cargas son embarcadas
 
     simular(cola_espera, cola_embarque, tiempo_simulacion, tiempo_intervalo, probabilidad_embarque);
-    
+    imprimir_informacion(cola_embarque, cola_espera);
 
     return 0;
 }

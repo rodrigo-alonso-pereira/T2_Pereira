@@ -29,8 +29,14 @@ void desencolar(cola* c);
 carga* frente(cola* c);
 carga* final(cola* c);
 void imprime_cola(cola* c);
+int contar_cola(cola* c);
 
 /*------------- operaciones SIMULACION -------------*/
 
 int embarcar(float probabilidad);
-void simular(cola* embarque, cola* espera ,int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque);
+void simular(cola* cola_espera, cola* cola_embarque ,int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque);
+void imprimir_informacion(cola* cola_embarque, cola* cola_espera);
+void imprimir_tiempo_activacion(cola* cola_embarque);
+void imprimir_momento_embarque(cola* cola_embarque, cola* cola_espera);
+void imprimir_tiempo_permanencia(cola* cola_embarque, cola* cola_espera);
+float promedio_tiempo_permanencia(cola* cola_embarque);

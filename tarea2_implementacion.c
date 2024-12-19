@@ -92,6 +92,20 @@ void imprime_cola(cola* c) {
 	}
 }
 
+// contar_cola(c) cuenta los elementos de la cola c
+// orden de complejidad: O(n)
+int contar_cola(cola* c) {
+    int count = 0;
+    if (es_cola_vacia(c) == 0) {
+        carga* ptr = c->frente;
+        while (ptr != NULL) {
+            count++;
+            ptr = ptr->siguiente;
+        }
+    }
+    return count;
+}
+
 /*------------- operaciones SIMULACION -------------*/
 
 // embarcar(probabilidad) simula el embarque de un pasajero
@@ -105,6 +119,8 @@ int embarcar(float probabilidad) {
     };
 }
 
+// simular(cola_espera, cola_embarque, tiempo_simulacion, tiempo_intervalo, probabilidad_embarque) simula el proceso de embarque
+// orden de complejidad: O(n)
 void simular(cola* cola_espera, cola* cola_embarque ,int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque) {
        //TODO: Implementar la simulación según las especificaciones del enunciado
        int count_tiempo = 0;
@@ -152,4 +168,33 @@ void simular(cola* cola_espera, cola* cola_embarque ,int tiempo_simulacion, int 
             imprime_cola(cola_embarque);
             count_tiempo++; //Aumentar tiempo en 1
        }
+}
+
+void imprimir_informacion(cola* cola_embarque, cola* cola_espera) {
+    printf("\n\nRESUMEN DE SIMULACION:\n");
+    printf("Tiempos de activacion de periodos de embarque: ");
+    imprimir_tiempo_activacion(cola_embarque);
+    
+}
+
+void imprimir_tiempo_activacion(cola* cola_embarque) {
+    if (es_cola_vacia(cola_embarque) == 0) {
+		carga* ptr = cola_embarque->frente;
+        int tiempo_activacion = 0;
+		while (ptr != NULL) {
+            if (ptr->datos_carga->tiempo_activacion != tiempo_activacion) {
+                printf("%d ", 
+                    ptr->datos_carga->tiempo_activacion);
+                tiempo_activacion = ptr->datos_carga->tiempo_activacion;
+            }
+            ptr = ptr->siguiente;   
+		}
+		printf("\n");
+	} else {
+		printf("0\n");
+	} 
+}
+
+void imprimir_momento_embarque(cola* embarque, cola* espera) {
+    
 }
