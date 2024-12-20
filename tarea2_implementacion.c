@@ -196,5 +196,5 @@ void imprimir_tiempo_activacion(cola* cola_embarque) {
 }
 
 void imprimir_momento_embarque(cola* embarque, cola* espera) {
-    
+    //TODO: Continuar algoritmo de impresión
 }
