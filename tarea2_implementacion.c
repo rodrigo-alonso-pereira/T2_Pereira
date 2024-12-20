@@ -197,9 +197,9 @@ void imprimir_informacion(cola* cola_embarque, cola* cola_espera) {
     imprimir_tiempo_activacion(cola_embarque);
     printf(" -El momento de embarque de cada carga es: ");
     imprimir_momento_embarque(cola_embarque, cola_espera);
-    printf(" -El tiempo de permanencia de cada carga es: ");
+    printf("\n -El tiempo de permanencia de cada carga es: ");
     imprimir_tiempo_permanencia(cola_embarque, cola_espera);
-    printf(" -Tiempo promedio de permanencia de las cargas embarcadas: %.2f unidades de tiempo\n", promedio_tiempo_permanencia(cola_embarque));
+    printf("\n -Tiempo promedio de permanencia de las cargas embarcadas: %.2f unidades de tiempo\n", promedio_tiempo_permanencia(cola_embarque));
     printf(" -Número de cargas embarcadas: %d\n", contar_cola(cola_embarque));
     printf(" -Número de cargas no embarcadas: %d\n\n", contar_cola(cola_espera));
 }
@@ -243,7 +243,6 @@ void imprimir_momento_embarque(cola* cola_embarque, cola* cola_espera) {
             }
             ptr = ptr->siguiente;   
 		}
-		printf("\n");
 	}
 }
 
@@ -266,7 +265,6 @@ void imprimir_tiempo_permanencia(cola* cola_embarque, cola* cola_espera) {
             }
             ptr = ptr->siguiente;   
 		}
-		printf("\n");
 	}
 }
 
