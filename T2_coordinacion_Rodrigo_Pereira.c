@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
     printf("Tiempo simulacion: %d\n", tiempo_simulacion);
     printf("Intervalo de llegada: %d\n", tiempo_intervalo);
-    printf("Probabilidad de embarque: %.2f\n", probabilidad_embarque);
+    printf("Probabilidad de embarque: %.2f\n\n", probabilidad_embarque);
 
     cola *cola_espera = crea_cola(); // cola cuando las cargas esperan ser embarcadas
     cola *cola_embarque = crea_cola(); // cola cuando las cargas son embarcadas

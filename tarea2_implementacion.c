@@ -71,9 +71,8 @@ carga* final(cola* c) {
     return NULL;
 }
 
-// imprime_cola(c) imprime los elementos de la cola c
-// orden de complejidad: O(n)
-void imprime_cola(cola* c) {
+// funcion aux, para ayudar a debuguear el programa, viendo cargas con todos sus datos.
+/*void imprime_cola(cola* c) {
 	if (es_cola_vacia(c) == 0) {
 		carga* ptr = c->frente;
 		while (ptr != NULL) {
@@ -87,6 +86,27 @@ void imprime_cola(cola* c) {
 			ptr = ptr->siguiente;
 		}
 		printf("\n");
+	} else {
+		printf("[]\n\n");
+	}
+}*/
+
+// imprime_cola(c) imprime los elementos de la cola c
+// orden de complejidad: O(n)
+void imprime_cola(cola* c) {
+	if (es_cola_vacia(c) == 0) {
+		carga* ptr = c->frente;
+		while (ptr != NULL) {
+            //[numero de carga | tiempo de carga]
+			printf("[%d|%d]", 
+                ptr->num_carga, 
+                ptr->datos_carga->tiempo_carga);
+            if (ptr->siguiente != NULL) {
+                printf(" -> ");
+            }
+			ptr = ptr->siguiente;
+		}
+		printf("\n\n");
 	} else {
 		printf("[]\n\n");
 	}
@@ -120,9 +140,8 @@ int embarcar(float probabilidad) {
 }
 
 // simular(cola_espera, cola_embarque, tiempo_simulacion, tiempo_intervalo, probabilidad_embarque) simula el proceso de embarque
-// orden de complejidad: O(n)
+// orden de complejidad: O(n^2)
 void simular(cola* cola_espera, cola* cola_embarque ,int tiempo_simulacion, int tiempo_intervalo, float probabilidad_embarque) {
-       //TODO: Implementar la simulación según las especificaciones del enunciado
        int count_tiempo = 0;
        int num_carga = 1;
        int proceso_embarque = 0; //Proceso de embarque no activo por defecto
@@ -155,7 +174,7 @@ void simular(cola* cola_espera, cola* cola_embarque ,int tiempo_simulacion, int 
                         carga_actual->datos_carga->tiempo_activacion = tiempo_activacion; //Asignar tiempo de activacion de embarque
                         encolar(cola_embarque, carga_actual->datos_carga, carga_actual->num_carga); //Encolar carga en espera
                         desencolar(cola_espera); //Desencolar carga actual
-                    } else { //Si n
+                    } else { //Si el tiempo de la carga es mayor al tiempo de inicio de embarque
                         proceso_embarque = 0; //Terminar proceso de embarque
                     }
                 } else {
@@ -170,13 +189,23 @@ void simular(cola* cola_espera, cola* cola_embarque ,int tiempo_simulacion, int 
        }
 }
 
+// imprimir_informacion(cola_embarque, cola_espera) imprime la información de la simulación
+// orden de complejidad: O(n)
 void imprimir_informacion(cola* cola_embarque, cola* cola_espera) {
-    printf("\n\nRESUMEN DE SIMULACION:\n");
-    printf("Tiempos de activacion de periodos de embarque: ");
+    printf("\n\nRESUMEN DE LA SIMULACION:\n");
+    printf(" -Tiempos de activacion de periodos de embarque: ");
     imprimir_tiempo_activacion(cola_embarque);
-    
+    printf(" -El momento de embarque de cada carga es: ");
+    imprimir_momento_embarque(cola_embarque, cola_espera);
+    printf(" -El tiempo de permanencia de cada carga es: ");
+    imprimir_tiempo_permanencia(cola_embarque, cola_espera);
+    printf(" -Tiempo promedio de permanencia de las cargas embarcadas: %.2f unidades de tiempo\n", promedio_tiempo_permanencia(cola_embarque));
+    printf(" -Número de cargas embarcadas: %d\n", contar_cola(cola_embarque));
+    printf(" -Número de cargas no embarcadas: %d\n\n", contar_cola(cola_espera));
 }
 
+// imprimir_tiempo_activacion(cola_embarque) imprime el tiempo de activación de los periodos de embarque
+// orden de complejidad: O(n)
 void imprimir_tiempo_activacion(cola* cola_embarque) {
     if (es_cola_vacia(cola_embarque) == 0) {
 		carga* ptr = cola_embarque->frente;
@@ -195,6 +224,64 @@ void imprimir_tiempo_activacion(cola* cola_embarque) {
 	} 
 }
 
-void imprimir_momento_embarque(cola* embarque, cola* espera) {
-    //TODO: Continuar algoritmo de impresión
+// imprimir_momento_embarque(cola_embarque, cola_espera) imprime el momento de embarque de cada carga
+// orden de complejidad: O(n)
+void imprimir_momento_embarque(cola* cola_embarque, cola* cola_espera) {
+    if (es_cola_vacia(cola_embarque) == 0) {
+		carga* ptr = cola_embarque->frente;
+		while (ptr != NULL) {
+            printf("c%d:%d, ", ptr->num_carga, ptr->datos_carga->tiempo_embarque);
+            ptr = ptr->siguiente;   
+		}
+	}
+    if (es_cola_vacia(cola_espera) == 0) {
+		carga* ptr = cola_espera->frente;
+		while (ptr != NULL) {
+            printf("c%d:-1", ptr->num_carga);
+            if (ptr->siguiente != NULL) {
+                printf(", ");
+            }
+            ptr = ptr->siguiente;   
+		}
+		printf("\n");
+	}
+}
+
+// imprimir_tiempo_permanencia(cola_embarque, cola_espera) imprime el tiempo de permanencia de cada carga
+// orden de complejidad: O(n)
+void imprimir_tiempo_permanencia(cola* cola_embarque, cola* cola_espera) {
+    if (es_cola_vacia(cola_embarque) == 0) {
+		carga* ptr = cola_embarque->frente;
+		while (ptr != NULL) {
+            printf("c%d:%d, ", ptr->num_carga, ptr->datos_carga->tiempo_permanencia);
+            ptr = ptr->siguiente;   
+		}
+	}
+    if (es_cola_vacia(cola_espera) == 0) {
+		carga* ptr = cola_espera->frente;
+		while (ptr != NULL) {
+            printf("c%d:-1", ptr->num_carga);
+            if (ptr->siguiente != NULL) {
+                printf(", ");
+            }
+            ptr = ptr->siguiente;   
+		}
+		printf("\n");
+	}
+}
+
+// promedio_tiempo_permanencia(cola_embarque) calcula el promedio del tiempo de permanencia de las cargas embarcadas
+// orden de complejidad: O(n)
+float promedio_tiempo_permanencia(cola* cola_embarque) {
+    int count = 0;
+    int sum = 0;
+    if (es_cola_vacia(cola_embarque) == 0) {
+		carga* ptr = cola_embarque->frente;
+		while (ptr != NULL) {
+            sum += ptr->datos_carga->tiempo_permanencia;
+            count++;
+            ptr = ptr->siguiente;   
+		}
+	} 
+    return (float)sum/count;
 }
